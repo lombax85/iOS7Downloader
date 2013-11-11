@@ -15,8 +15,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "209"
             endingLineNumber = "209"
-            landmarkName = "-URLSession:downloadTask:didResumeAtOffset:expectedTotalBytes:"
-            landmarkType = "5">
+            landmarkName = "@implementation FLDownload"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -57,8 +57,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "222"
             endingLineNumber = "222"
-            landmarkName = "-URLSession:didBecomeInvalidWithError:"
-            landmarkType = "5">
+            landmarkName = "@implementation FLDownload"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -73,8 +73,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "235"
             endingLineNumber = "235"
-            landmarkName = "-URLSessionDidFinishEventsForBackgroundURLSession:"
-            landmarkType = "5">
+            landmarkName = "@implementation FLDownload"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
