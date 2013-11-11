@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E803DBEF1830F0D8008681E9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E803DBEE1830F0D8008681E9 /* README.md */; };
-		E803DBFF183151B1008681E9 /* FLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = E803DBFE183151B1008681E9 /* FLDownload.m */; };
+		E803DC05183175AD008681E9 /* FLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = E803DC04183175AD008681E9 /* FLDownload.m */; };
 		E8907C6D1830236A009B4A8F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C6C1830236A009B4A8F /* Foundation.framework */; };
 		E8907C6F1830236A009B4A8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C6E1830236A009B4A8F /* CoreGraphics.framework */; };
 		E8907C711830236A009B4A8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C701830236A009B4A8F /* UIKit.framework */; };
@@ -37,8 +37,8 @@
 
 /* Begin PBXFileReference section */
 		E803DBEE1830F0D8008681E9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
-		E803DBFD183151B1008681E9 /* FLDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownload.h; sourceTree = "<group>"; };
-		E803DBFE183151B1008681E9 /* FLDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownload.m; sourceTree = "<group>"; };
+		E803DC03183175AD008681E9 /* FLDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownload.h; sourceTree = "<group>"; };
+		E803DC04183175AD008681E9 /* FLDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownload.m; sourceTree = "<group>"; };
 		E8907C691830236A009B4A8F /* DownloadIOS7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DownloadIOS7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8907C6C1830236A009B4A8F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E8907C6E1830236A009B4A8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -123,9 +123,9 @@
 				E8907C7E1830236A009B4A8F /* Main.storyboard */,
 				E8907C811830236A009B4A8F /* ViewController.h */,
 				E8907C821830236A009B4A8F /* ViewController.m */,
+				E803DC03183175AD008681E9 /* FLDownload.h */,
+				E803DC04183175AD008681E9 /* FLDownload.m */,
 				E8907C841830236A009B4A8F /* Images.xcassets */,
-				E803DBFD183151B1008681E9 /* FLDownload.h */,
-				E803DBFE183151B1008681E9 /* FLDownload.m */,
 				E8907C731830236A009B4A8F /* Supporting Files */,
 			);
 			path = DownloadIOS7;
@@ -259,7 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8907C831830236A009B4A8F /* ViewController.m in Sources */,
-				E803DBFF183151B1008681E9 /* FLDownload.m in Sources */,
+				E803DC05183175AD008681E9 /* FLDownload.m in Sources */,
 				E8907C7D1830236A009B4A8F /* AppDelegate.m in Sources */,
 				E8907C791830236A009B4A8F /* main.m in Sources */,
 			);
