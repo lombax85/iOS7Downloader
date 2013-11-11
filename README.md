@@ -16,8 +16,10 @@ You can use it as follow:
     [download start];
     
 
-Note that:
+Note that, by now (consider this a TODO list):
 
+- if the app is killed by the user, the download activity is lost
+- if the app is killed by the system, the download continues, but the file is saved in the default dir and not in the directory you choosen to place the file.
 - completion block and progress block are not executed if a download progress/finishes in background
 - to support background download you must add in your AppDelegate this method:
 
