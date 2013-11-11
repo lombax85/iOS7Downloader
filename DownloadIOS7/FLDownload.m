@@ -119,6 +119,9 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
     }
 }
 
+/**
+ Start a download
+ */
 -(void)start
 {
     // check that all has been set correctly
@@ -163,9 +166,56 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
     }
 }
 
+/**
+ Stop a download
+ */
 -(void)stop
 {
     [self dispose];
+}
+
+
+/**
+ Call this method only to resume a download that has been saved to disk and not restarted automatically
+ */
+-(void)resumeFromKilledState
+{
+    self.isDownloading = YES;
+    
+    // check that all has been set correctly
+    if (!self.url)
+    {
+        NSException *exception = [NSException exceptionWithName:@"Set all Properties" reason:@"You must give an URL" userInfo:nil];
+        [exception raise];
+    }
+    // create a new session configuration. Use the url string as identifier to retrieve the download later
+    NSURLSessionConfiguration *backgroundConfiguration = [NSURLSessionConfiguration backgroundSessionConfiguration:self.url.absoluteString];
+    
+    // create the download session - must use delegate because completion block are not supported for background downloads
+    self.session = [NSURLSession sessionWithConfiguration:backgroundConfiguration delegate:self delegateQueue:nil];
+    
+    // When resuming a session after the app was killed, you MUST NOT RECREATE the download task. The task is recreated automatically by the session and then finished (calling the delegate methods)
+    
+    
+    // get the download tasks. If the app was in the state "killed by the system" with download in progress, I will find it inside the downloadTasks array. Otherwise, I start another
+    [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        
+        // since I make only one download task per session, it's safe to call lastObject
+        NSURLSessionDownloadTask *task = [downloadTasks lastObject];
+        
+        if (task)
+        {
+            if (task.state != NSURLSessionTaskStateRunning)
+                // start the download
+                [task resume];
+        } else {
+            // recreate the task
+            NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:self.url];
+            if (downloadTask.state != NSURLSessionTaskStateRunning)
+                // start the download
+                [downloadTask resume];
+        }
+    }];
 }
 
 #pragma mark - Private Methods
@@ -193,10 +243,11 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
         // break the retain cycle and release FLDownload, last thing to be called
         self.session = nil;
     }];
-
-    
 }
 
+/**
+ Save the download list to the disk
+ */
 -(void)saveDownloads
 {
 
@@ -210,7 +261,6 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
-
 
 
 /**
@@ -242,52 +292,6 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
     [downloadTask resume];
     
      */
-}
-
-/**
- Call this method only to resume a download that has been saved to disk and not restarted automatically
- */
--(void)resumeFromKilledState
-{
-    self.isDownloading = YES;
-    
-    // check that all has been set correctly
-    if (!self.url)
-    {
-        NSException *exception = [NSException exceptionWithName:@"Set all Properties" reason:@"You must give an URL" userInfo:nil];
-        [exception raise];
-    }
-    // create a new session configuration. Use the url string as identifier to retrieve the download later
-    NSURLSessionConfiguration *backgroundConfiguration = [NSURLSessionConfiguration backgroundSessionConfiguration:self.url.absoluteString];
-    
-    // create the download session - must use delegate because completion block are not supported for background downloads
-    self.session = [NSURLSession sessionWithConfiguration:backgroundConfiguration delegate:self delegateQueue:nil];
-    
-    // When resuming a session after the app was killed, you MUST NOT RECREATE the download task. The task is recreated automatically by the session and then finished (calling the delegate methods)
-    
-    
-    // for some strange reason, sometimes I see Bad Address on [downloadTask resume]. The zombie object was the downloadTask After adding the below statement, the bad access disappeared O_o
-    [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
-        
-        // since I make only one download task per session, it's safe to call lastObject
-        NSURLSessionDownloadTask *task = [downloadTasks lastObject];
-        
-        if (task)
-        {
-            if (task.state != NSURLSessionTaskStateRunning)
-                // start the download
-                [task resume];
-        } else {
-            // recreate the task
-            NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:self.url];
-            if (downloadTask.state != NSURLSessionTaskStateRunning)
-                // start the download
-                [downloadTask resume];
-        }
-    }];
-
-
-    
 }
 
 #pragma mark - Setters and Getters

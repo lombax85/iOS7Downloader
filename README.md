@@ -1,3 +1,10 @@
+TODO:::
+
+1) update the Readme and the TODO :-)
+2) add a download view controller to this project
+3) add the possibility to see downloaded files
+
+
 This class is BETA.
 Read the comments in FLDownload.h and FLDownload.m files
 
