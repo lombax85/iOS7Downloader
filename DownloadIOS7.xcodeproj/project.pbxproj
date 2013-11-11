@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E803DBEF1830F0D8008681E9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E803DBEE1830F0D8008681E9 /* README.md */; };
+		E803DBFC183150B3008681E9 /* FLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = E803DBFB183150B3008681E9 /* FLDownload.m */; };
 		E8907C6D1830236A009B4A8F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C6C1830236A009B4A8F /* Foundation.framework */; };
 		E8907C6F1830236A009B4A8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C6E1830236A009B4A8F /* CoreGraphics.framework */; };
 		E8907C711830236A009B4A8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C701830236A009B4A8F /* UIKit.framework */; };
@@ -22,7 +23,6 @@
 		E8907C8E1830236A009B4A8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C701830236A009B4A8F /* UIKit.framework */; };
 		E8907C961830236A009B4A8F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E8907C941830236A009B4A8F /* InfoPlist.strings */; };
 		E8907C981830236A009B4A8F /* DownloadIOS7Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E8907C971830236A009B4A8F /* DownloadIOS7Tests.m */; };
-		E8907CA6183023D2009B4A8F /* FLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = E8907CA5183023D2009B4A8F /* FLDownload.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +37,8 @@
 
 /* Begin PBXFileReference section */
 		E803DBEE1830F0D8008681E9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
+		E803DBFA183150B3008681E9 /* FLDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownload.h; sourceTree = "<group>"; };
+		E803DBFB183150B3008681E9 /* FLDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownload.m; sourceTree = "<group>"; };
 		E8907C691830236A009B4A8F /* DownloadIOS7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DownloadIOS7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8907C6C1830236A009B4A8F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E8907C6E1830236A009B4A8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -56,8 +58,6 @@
 		E8907C931830236A009B4A8F /* DownloadIOS7Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DownloadIOS7Tests-Info.plist"; sourceTree = "<group>"; };
 		E8907C951830236A009B4A8F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E8907C971830236A009B4A8F /* DownloadIOS7Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownloadIOS7Tests.m; sourceTree = "<group>"; };
-		E8907CA4183023D2009B4A8F /* FLDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownload.h; sourceTree = "<group>"; };
-		E8907CA5183023D2009B4A8F /* FLDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownload.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +124,8 @@
 				E8907C811830236A009B4A8F /* ViewController.h */,
 				E8907C821830236A009B4A8F /* ViewController.m */,
 				E8907C841830236A009B4A8F /* Images.xcassets */,
-				E8907CA4183023D2009B4A8F /* FLDownload.h */,
-				E8907CA5183023D2009B4A8F /* FLDownload.m */,
+				E803DBFA183150B3008681E9 /* FLDownload.h */,
+				E803DBFB183150B3008681E9 /* FLDownload.m */,
 				E8907C731830236A009B4A8F /* Supporting Files */,
 			);
 			path = DownloadIOS7;
@@ -259,7 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8907C831830236A009B4A8F /* ViewController.m in Sources */,
-				E8907CA6183023D2009B4A8F /* FLDownload.m in Sources */,
+				E803DBFC183150B3008681E9 /* FLDownload.m in Sources */,
 				E8907C7D1830236A009B4A8F /* AppDelegate.m in Sources */,
 				E8907C791830236A009B4A8F /* main.m in Sources */,
 			);
@@ -388,6 +388,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Lombardo/Dropbox/Sviluppo/AAA\\ -\\ Progetti\\ su\\ Github/DownloadIOS7/DownloadIOS7",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DownloadIOS7/DownloadIOS7-Prefix.pch";
 				INFOPLIST_FILE = "DownloadIOS7/DownloadIOS7-Info.plist";
@@ -401,6 +405,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Lombardo/Dropbox/Sviluppo/AAA\\ -\\ Progetti\\ su\\ Github/DownloadIOS7/DownloadIOS7",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DownloadIOS7/DownloadIOS7-Prefix.pch";
 				INFOPLIST_FILE = "DownloadIOS7/DownloadIOS7-Info.plist";

@@ -39,9 +39,18 @@
 +(void)resumeDownloadForSession:(NSURL *)session NS_AVAILABLE_IOS(7_0);
 
 /**
+ The download list is saved to disk everytime a download is added. 
+ If the user kills the app while downloading (or is killed by the system), all downloads stops (if it has been killed by the user, stops even the background downloads managed by iOS)
+ When the user starts the app again, the download list is recreated, but the download are in stopped state (in case of app killed by the user) or not updated (in case of killed by the system)
+ To start them again, call this method
+ */
+-(void)resumeFromKilledState NS_AVAILABLE_IOS(7_0);
+
+/**
  Set the completion block
  */
 @property (copy, nonatomic) void (^completionBlock)(BOOL success, NSError *error);
+-(void)setCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
 
 /**
  Set the download url
@@ -59,10 +68,20 @@
 -(void)start NS_AVAILABLE_IOS(7_0);
 
 /**
+ Stop the download and release the object (if no one is retaining it)
+ */
+-(void)stop NS_AVAILABLE_IOS(7_0);
+
+/**
+ Return yes if the current state is downloading
+ */
+@property (nonatomic, readonly) BOOL isDownloading;
+
+/**
  Set the progress update block - optional
  */
-@property (copy, nonatomic) void (^progressBlock)(int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite);
--(void)setProgressBlock:(void (^)(int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite))progressBlock;
+@property (copy, nonatomic) void (^progressBlock)(NSURL *url, int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite);
+-(void)setProgressBlock:(void (^)(NSURL *url, int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite))progressBlock;
 
 /**
  The name of the file that it's being downloaded

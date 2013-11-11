@@ -5,6 +5,13 @@
 //  Created by Lombardo on 10/11/13.
 //  Copyright (c) 2013 Lombardo. All rights reserved.
 //
+//  NOTE: App States:
+//  The app can be in one of this states:
+//
+//  - running
+//  - suspended (the download continue in background, then the app is awaken and AppDelegate called. All objects are still living so no need to recreate the download)
+//  - killed by the system, (the download continue in background, then the app is awakend and AppDelegate called. Since the objects are no more living, we need to create again them using resumeFromBackground method. This method recreates the session object. The download object doesn't need to be recreated
+//  - killed by the user (the download is suspended and sometimes need to be recreated)
 
 #import "FLDownload.h"
 
@@ -14,16 +21,36 @@
  */
 static NSMutableDictionary *_downloads;
 
+/**
+ Constant to archive - unarchive Downloads dictionary
+ */
+static NSString *kFLDownloadUserDefaultsObject = @"kFLDownloadUserDefaultsObject";
+
+/**
+ Constants for NSCoding
+ */
+static NSString *kFLDownloadEncodedURL = @"kFLDownloadEncodedURL";
+static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDestinationDirectory";
+
+
 @interface FLDownload ()
 
-@property (copy, nonatomic) NSString *fileName;
+/**
+ Weak reference since NSURLSession retains it's delegate <-- EDIT -> many bad access with weak
+*/
+@property (strong, nonatomic) NSURLSession *session;
 
-// Weak reference since NSURLSession retains it's delegate
-@property (weak, nonatomic) NSURLSession *session;
+/**
+ Is Downloading?
+ */
+@property (nonatomic, readwrite) BOOL isDownloading;
 
 @end
 
+
 @implementation FLDownload
+
+#pragma mark - Initialization
 
 - (id)init
 {
@@ -31,10 +58,8 @@ static NSMutableDictionary *_downloads;
     if (self) {
         _completionBlock = ^(BOOL success, NSError *error){};
         _url = nil;
-        _fileName = nil;
         _destinationDirectory = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] absoluteString];
-        if (!_downloads)
-            _downloads = [NSMutableDictionary dictionary];
+        _isDownloading = NO;
     }
     return self;
 }
@@ -50,18 +75,49 @@ static NSMutableDictionary *_downloads;
     return self;
 }
 
--(void)dispose
-{
-    [self.session invalidateAndCancel];
-    self.session = nil;
-    [_downloads removeObjectForKey:self.url.absoluteString];
-}
+#pragma mark - Public methods
 
 +(NSDictionary *)downloads;
 {
+    if (!_downloads)
+    {
+        NSData *downloadData = [[NSUserDefaults standardUserDefaults] objectForKey:kFLDownloadUserDefaultsObject];
+        NSDictionary *loadedDownload = [NSKeyedUnarchiver unarchiveObjectWithData:downloadData];
+        
+        if (!loadedDownload || ![loadedDownload isKindOfClass:[NSDictionary class]])
+        {
+            _downloads = [NSMutableDictionary dictionary];
+        } else {
+            _downloads = [loadedDownload mutableCopy];
+        }
+    }
+    
     return [[NSDictionary alloc] initWithDictionary:_downloads];
 }
 
++(void)resumeDownloadForSession:(NSURL *)session
+{
+    /* to resume a download there are two different workflows:
+     1 - The app is in suspended state, then the download is finished:
+     - the system calls - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
+     - the user must call +(void)resumeDownloadForSession:(NSURL *)session passing the session url
+     - we do nothing, because all objects are already created. The system forward the correct delegate calls
+     
+     2 - The app is in the killed state (killed by the system, not the user), then the download is finished:
+     - the system relaunch app and calls - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
+     - the user must call +(void)resumeDownloadForSession:(NSURL *)session passing the session url
+     - we check that the download does not exist inside the list (the app has just been lauched from killed state, so the objects are not initialized), so we alloc-init a new FLDownload object and call resumeFromBackground (which recreates a NSURLSession object setting the delegate)
+     */
+    
+    // change the current state
+    
+    if (![[FLDownload downloads] objectForKey:[session absoluteString]])
+    {
+        // the app was previously killed
+        FLDownload *download = [[FLDownload alloc] initBackgroundDownloadWithURL:session completion:nil];
+        [download resumeFromBackground];
+    }
+}
 
 -(void)start
 {
@@ -82,14 +138,20 @@ static NSMutableDictionary *_downloads;
     
     if (![_downloads objectForKey:self.url.absoluteString])
     {
-        // take the filename from the last path component
-        self.fileName = [NSString stringWithString:[self.url.absoluteString lastPathComponent]];
+        // init downloads (look implementation)
+        [FLDownload downloads];
         
         // add the download to the list - dictionary of downloads
         [_downloads setObject:self forKey:self.url.absoluteString];
         
+        // save the downloads dictionary to disk
+        [self saveDownloads];
+        
         // put the download object in the local strong variable
         NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:self.url];
+        
+        // change the current state
+        self.isDownloading = YES;
         
         // start the download
         [downloadTask resume];
@@ -101,30 +163,63 @@ static NSMutableDictionary *_downloads;
     }
 }
 
-+(void)resumeDownloadForSession:(NSURL *)session
+-(void)stop
 {
-    /* to resume a download there are two different workflows:
-    1 - The app is in suspended state, then the download is finished:
-        - the system calls - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
-        - the user must call +(void)resumeDownloadForSession:(NSURL *)session passing the session url
-        - we do nothing, because all objects are already created. The system forward the correct delegate calls
-     
-    2 - The app is in the killed state, then the download is finished:
-       - the system relaunch app and calls - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
-       - the user must call +(void)resumeDownloadForSession:(NSURL *)session passing the session url
-       - we check that the download does not exist inside the list (the app has just been lauched from killed state, so the objects are not initialized), so we alloc-init a new FLDownload object and call resumeFromBackground (which recreates a NSURLSession object setting the delegate)
-    */
-    
-    if (![[FLDownload downloads] objectForKey:[session absoluteString]])
-    {
-        // the app was previously killed
-        FLDownload *download = [[FLDownload alloc] initBackgroundDownloadWithURL:session completion:nil];
-        [download resumeFromBackground];
-    }
+    [self dispose];
 }
 
+#pragma mark - Private Methods
+
+/**
+ Clear the download and free the object
+ */
+-(void)dispose
+{
+    // recreate the session if not exists
+    if (!self.session)
+    {
+        NSURLSessionConfiguration *backgroundConfiguration = [NSURLSessionConfiguration backgroundSessionConfiguration:self.url.absoluteString];
+        
+        self.session = [NSURLSession sessionWithConfiguration:backgroundConfiguration delegate:self delegateQueue:nil];
+    }
+    
+    [self.session invalidateAndCancel];
+    [self.session flushWithCompletionHandler:^{
+        
+        self.isDownloading = NO;
+        [_downloads removeObjectForKey:self.url.absoluteString];
+        [self saveDownloads];
+        
+        // break the retain cycle and release FLDownload, last thing to be called
+        self.session = nil;
+    }];
+
+    
+}
+
+-(void)saveDownloads
+{
+
+    if ([_downloads count] > 0)
+    {
+        NSData *notFinishedDownloads = [NSKeyedArchiver archivedDataWithRootObject:_downloads];
+        [[NSUserDefaults standardUserDefaults] setObject:notFinishedDownloads forKey:kFLDownloadUserDefaultsObject];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kFLDownloadUserDefaultsObject];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+
+
+/**
+ This method is called only if the app was previously in killed state (killed by the system, not by the user). If the app was suspended, no need to recreate the NSURLSession
+ */
 -(void)resumeFromBackground
 {
+    self.isDownloading = YES;
+    
     // check that all has been set correctly
     if (!self.url)
     {
@@ -137,10 +232,6 @@ static NSMutableDictionary *_downloads;
     // create the download session - must use delegate because completion block are not supported for background downloads
     self.session = [NSURLSession sessionWithConfiguration:backgroundConfiguration delegate:self delegateQueue:nil];
     
-    // take the filename from the last path component
-    self.fileName = [NSString stringWithString:[self.url.absoluteString lastPathComponent]];
-    
-    
     // When resuming a session after the app was killed, you MUST NOT RECREATE the download task. The task is recreated automatically by the session and then finished (calling the delegate methods)
     
     /*
@@ -151,6 +242,59 @@ static NSMutableDictionary *_downloads;
     [downloadTask resume];
     
      */
+}
+
+/**
+ Call this method only to resume a download that has been saved to disk and not restarted automatically
+ */
+-(void)resumeFromKilledState
+{
+    self.isDownloading = YES;
+    
+    // check that all has been set correctly
+    if (!self.url)
+    {
+        NSException *exception = [NSException exceptionWithName:@"Set all Properties" reason:@"You must give an URL" userInfo:nil];
+        [exception raise];
+    }
+    // create a new session configuration. Use the url string as identifier to retrieve the download later
+    NSURLSessionConfiguration *backgroundConfiguration = [NSURLSessionConfiguration backgroundSessionConfiguration:self.url.absoluteString];
+    
+    // create the download session - must use delegate because completion block are not supported for background downloads
+    self.session = [NSURLSession sessionWithConfiguration:backgroundConfiguration delegate:self delegateQueue:nil];
+    
+    // When resuming a session after the app was killed, you MUST NOT RECREATE the download task. The task is recreated automatically by the session and then finished (calling the delegate methods)
+    
+    
+    // for some strange reason, sometimes I see Bad Address on [downloadTask resume]. The zombie object was the downloadTask After adding the below statement, the bad access disappeared O_o
+    [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        
+        // since I make only one download task per session, it's safe to call lastObject
+        NSURLSessionDownloadTask *task = [downloadTasks lastObject];
+        
+        if (task)
+        {
+            if (task.state != NSURLSessionTaskStateRunning)
+                // start the download
+                [task resume];
+        } else {
+            // recreate the task
+            NSURLSessionDownloadTask *downloadTask = [self.session downloadTaskWithURL:self.url];
+            if (downloadTask.state != NSURLSessionTaskStateRunning)
+                // start the download
+                [downloadTask resume];
+        }
+    }];
+
+
+    
+}
+
+#pragma mark - Setters and Getters
+
+- (NSString *)fileName
+{
+    return [NSString stringWithString:[self.url.absoluteString lastPathComponent]];
 }
 
 #pragma mark - NSURLSessionDownloadDelegate
@@ -167,7 +311,7 @@ didFinishDownloadingToURL:(NSURL *)location
     NSError *error = nil;
     
     // the file name and final location
-    NSURL *finalLocation = [NSURL URLWithString:[self.destinationDirectory stringByAppendingPathComponent:self.fileName]];
+    NSURL *finalLocation = [NSURL URLWithString:[NSString stringWithFormat:@"file:///%@/%@", self.destinationDirectory, self.fileName]];
     
     // move the file
     BOOL success = [[NSFileManager defaultManager] moveItemAtURL:location toURL:finalLocation error:&error];
@@ -192,7 +336,7 @@ didFinishDownloadingToURL:(NSURL *)location
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
     if (self.progressBlock)
-        self.progressBlock(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+        self.progressBlock([NSURL URLWithString:session.configuration.identifier], bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
 }
 
 /* Sent when a download has been resumed. If a download failed with an
@@ -232,6 +376,28 @@ expectedTotalBytes:(int64_t)expectedTotalBytes
 {
     NSLog(@"Finish");
 }
+
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.url forKey:kFLDownloadEncodedURL];
+    [aCoder encodeObject:self.destinationDirectory forKey:kFLDownloadEncodedDestinationDirectory];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [self init];
+    if (self) {
+        _url = [aDecoder decodeObjectForKey:kFLDownloadEncodedURL];
+        _destinationDirectory = [aDecoder decodeObjectForKey:kFLDownloadEncodedDestinationDirectory];
+        
+        // start
+        
+    }
+    return self;
+}
+
 
 
 @end

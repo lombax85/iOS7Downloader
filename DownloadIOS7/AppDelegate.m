@@ -8,46 +8,19 @@
 
 #import "AppDelegate.h"
 #import "FLDownload.h"
+#import <LombaXFramework/LombaXFramework.h>
 
 @implementation AppDelegate
 
-void fllog(NSString *aString)
-{
-    NSString *url = (NSString *)[[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] path];
-    NSString *document = [url stringByAppendingPathComponent:@"File.txt"];
-    
-    NSError *error = nil;
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:document])
-    {
-        [[aString dataUsingEncoding:NSUTF8StringEncoding] writeToFile:document options:NSDataWritingAtomic error:&error];
-    } else {
-        NSData *data = [NSData dataWithContentsOfFile:document];
-        NSMutableString *log = nil;
-        if (data)
-            log = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] mutableCopy];
-        else
-            log = [NSMutableString string];
-        
-        [log appendString:@"\n"];
-        [log appendString:aString];
-        
-        NSData *finalData = [log dataUsingEncoding:NSUTF8StringEncoding];
-        
-        [[NSFileManager defaultManager] removeItemAtPath:document error:nil];
-        
-        [finalData writeToFile:document options:NSDataWritingAtomic error:&error];
-    }
-    
 
+// debug to a file
 
-}
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    fllog(@"application lauched");
+    [FLFileDebugger writeDebugLine:@"Test"];
     return YES;
 }
 							
@@ -80,19 +53,15 @@ void fllog(NSString *aString)
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
 {
-    
-    fllog(@"application handle event");
+
     
     NSURL *url = [NSURL URLWithString:identifier];
     
     
     [FLDownload resumeDownloadForSession:url];
     
-    fllog(@"application finished handling event");
-    
     completionHandler();
-    
-    
+
 }
 
 

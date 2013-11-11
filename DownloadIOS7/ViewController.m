@@ -36,8 +36,9 @@
         NSLog(@"Success: %i", success);
     }];
     
-    [download setProgressBlock:^(int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
-        NSLog(@"%qi, %qi, %qi", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+    
+    [download setProgressBlock:^(NSURL *url, int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
+        NSLog(@"%@, %qi, %qi, %qi", url, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
     }];
     
     [download start];
