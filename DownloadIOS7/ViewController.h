@@ -11,5 +11,6 @@
 @interface ViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UITextField *url;
 - (IBAction)start:(id)sender;
+- (IBAction)startAlternative:(id)sender;
 
 @end

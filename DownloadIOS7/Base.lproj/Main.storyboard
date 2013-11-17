@@ -17,21 +17,41 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nkh-U2-69Y">
-                                <rect key="frame" x="20" y="170" width="46" height="30"/>
+                                <rect key="frame" x="96" y="115" width="105" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
+                                <state key="normal" title="Start download">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="start:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="AQf-b8-ChZ"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zPh-xB-nBd">
-                                <rect key="frame" x="37" y="58" width="222" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write URL" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zPh-xB-nBd">
+                                <rect key="frame" x="20" y="48" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHg-OF-1OP">
+                                <rect key="frame" x="64" y="153" width="192" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Start Download - alternative">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="startAlternative:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="aQN-XS-XW4"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mEv-qs-VtJ">
+                                <rect key="frame" x="122" y="191" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Downloads">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="7c9-Lk-U7k" kind="modal" id="naj-xB-Y9K"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -41,6 +61,109 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--Download View Controller - Downloads-->
+        <scene sceneID="m9Y-4J-vRJ">
+            <objects>
+                <tableViewController id="Z79-Z7-4QV" customClass="DownloadViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" id="JBn-KO-Tlm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="60" id="KiK-vg-3bF" customClass="DownloadCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="60"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KiK-vg-3bF" id="tdD-ng-Zgk">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <progressView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9C6-wR-mTK">
+                                            <rect key="frame" x="20" y="40" width="280" height="2"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </progressView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSB-98-h2E">
+                                            <rect key="frame" x="20" y="6" width="160" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="9999999 /" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6oh-7L-dzE">
+                                            <rect key="frame" x="182" y="6" width="54" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="54" id="TJy-zF-fSK"/>
+                                                <constraint firstAttribute="width" constant="54" id="tzD-Vj-g42"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="10000000 KB" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fb1-td-vS8">
+                                            <rect key="frame" x="239.00000008514951" y="6" width="61" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="61" id="Nrv-NC-EEd"/>
+                                                <constraint firstAttribute="width" constant="61" id="Qox-PJ-hzQ"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="9C6-wR-mTK" secondAttribute="bottom" constant="17" id="04V-Y8-q3Z"/>
+                                        <constraint firstItem="9C6-wR-mTK" firstAttribute="top" secondItem="fb1-td-vS8" secondAttribute="bottom" constant="14" id="Eqq-4Y-id6"/>
+                                        <constraint firstItem="9C6-wR-mTK" firstAttribute="top" secondItem="6oh-7L-dzE" secondAttribute="bottom" constant="14" id="KOc-F3-a1f"/>
+                                        <constraint firstItem="6oh-7L-dzE" firstAttribute="leading" secondItem="QSB-98-h2E" secondAttribute="trailing" constant="2" id="RPp-8r-hqT"/>
+                                        <constraint firstAttribute="trailing" secondItem="fb1-td-vS8" secondAttribute="trailing" constant="20" id="UgJ-IF-DLj"/>
+                                        <constraint firstItem="fb1-td-vS8" firstAttribute="top" secondItem="tdD-ng-Zgk" secondAttribute="top" constant="6" id="bMb-Vg-bpI"/>
+                                        <constraint firstItem="QSB-98-h2E" firstAttribute="top" secondItem="tdD-ng-Zgk" secondAttribute="top" constant="6" id="bkr-02-5nC"/>
+                                        <constraint firstItem="6oh-7L-dzE" firstAttribute="top" secondItem="tdD-ng-Zgk" secondAttribute="top" constant="6" id="chV-qq-P6F"/>
+                                        <constraint firstAttribute="trailing" secondItem="9C6-wR-mTK" secondAttribute="trailing" constant="20" id="efa-rf-K3v"/>
+                                        <constraint firstItem="fb1-td-vS8" firstAttribute="leading" secondItem="6oh-7L-dzE" secondAttribute="trailing" constant="3" id="nCa-Yq-ozq"/>
+                                        <constraint firstItem="9C6-wR-mTK" firstAttribute="leading" secondItem="tdD-ng-Zgk" secondAttribute="leading" constant="20" id="qf6-Q6-FJr"/>
+                                        <constraint firstItem="9C6-wR-mTK" firstAttribute="top" secondItem="fb1-td-vS8" secondAttribute="bottom" constant="14" id="teO-9R-H80"/>
+                                        <constraint firstItem="9C6-wR-mTK" firstAttribute="top" secondItem="QSB-98-h2E" secondAttribute="bottom" constant="14" id="wj8-Xm-can"/>
+                                        <constraint firstItem="QSB-98-h2E" firstAttribute="leading" secondItem="tdD-ng-Zgk" secondAttribute="leading" constant="20" id="zNH-hQ-HYO"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="expectedBytes" destination="fb1-td-vS8" id="mn4-bk-yKV"/>
+                                    <outlet property="fileName" destination="QSB-98-h2E" id="Ref-fP-53Q"/>
+                                    <outlet property="fileProgress" destination="9C6-wR-mTK" id="AE0-qg-5Bz"/>
+                                    <outlet property="totalBytes" destination="6oh-7L-dzE" id="gb1-we-I5A"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Downloads" id="2dC-rD-Kpr">
+                        <barButtonItem key="leftBarButtonItem" title="Dismiss" id="XBc-KV-i0N">
+                            <connections>
+                                <action selector="dismiss:" destination="Z79-Z7-4QV" id="DKf-KM-Bty"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="af8-TD-LrP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1027" y="-45"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="L0T-fr-ajN">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="7c9-Lk-U7k" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mHS-r2-52n">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Z79-Z7-4QV" kind="relationship" relationship="rootViewController" id="wSA-vw-o6F"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yev-8T-Z0S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="493" y="-45"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

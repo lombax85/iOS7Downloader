@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "FLDownload.h"
+#import "FLDownloader.h"
 
 @interface ViewController ()
 
@@ -32,14 +32,15 @@
 - (IBAction)start:(id)sender {
     NSURL *url = [NSURL URLWithString:self.url.text];
     
-    FLDownload *download = [[FLDownload alloc] initBackgroundDownloadWithURL:url completion:^(BOOL success, NSError *error) {
-        NSLog(@"Success: %i", success);
-    }];
+    FLDownloadTask *download = [[FLDownloader sharedDownloader] downloadTaskForURL:url];
     
+    [download start];
+}
+
+- (IBAction)startAlternative:(id)sender {
+    NSURL *url = [NSURL URLWithString:self.url.text];
     
-    [download setProgressBlock:^(NSURL *url, int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
-        NSLog(@"%@, %qi, %qi, %qi", url, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
-    }];
+    FLDownloadTask *download = [FLDownloadTask downloadTaskForURL:url];
     
     [download start];
 }

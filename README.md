@@ -1,38 +1,51 @@
-TODO:::
+This is a simple class to manage background download on iOS 7.0
+You can start a download as follow:
 
-1) update the Readme and the TODO :-)
-2) add a download view controller to this project
-3) add the possibility to see downloaded files
-
-
-This class is BETA.
-Read the comments in FLDownload.h and FLDownload.m files
-
-You can use it as follow:
-
-    NSURL *url = [NSURL URLWithString:@"http://url.to.download"];
+// Using the sharedDownloader singleton instance
+- (IBAction)start:(id)sender {
+    NSURL *url = [NSURL URLWithString:self.url.text];
     
-    FLDownload *download = [[FLDownload alloc] initBackgroundDownloadWithURL:url completion:^(BOOL success, NSError *error) {
-        // code to execute when download finishes
-    }];
-    
-    [download setProgressBlock:^(int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
-        // update progress
-    }];
+    FLDownloadTask *download = [[FLDownloader sharedDownloader] downloadTaskForURL:url];
     
     [download start];
+}
+
+// creating directly a FLDownloadTask instance
+- (IBAction)startAlternative:(id)sender {
+    NSURL *url = [NSURL URLWithString:self.url.text];
     
+    FLDownloadTask *download = [FLDownloadTask downloadTaskForURL:url];
+    
+    [download start];
+}
 
-Note that, by now (consider this a TODO list):
+Look inside the DownloadViewController to see how to manage the progress, cancellation of a download ecc...
+When the download is finished, in this example, it will be copied inside the Documents directory by default
 
-- if the app is killed by the user, the download activity is lost
-- if the app is killed by the system, the download continues, but the file is saved in the default dir and not in the directory you choosen to place the file.
+
+Note for background download support
+
+- if the app is killed by the user, the download activity is killed by the system. It will resume from the beginning once the app is opened again. TODO: save resume data to avoid resuming from the beginning.
+- if the app is killed by the system (example: to free memory), the download continues in background.
 - completion block and progress block are not executed if a download progress/finishes in background
-- to support background download you must add in your AppDelegate this method:
+- to support background download (as described above) you must add in your AppDelegate this method:
 
  - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
  {
-    NSURL *url = [NSURL URLWithString:identifier];
-    [FLDownload resumeDownloadForSession:url];
-    completionHandler();
+    [FLDownloader sharedDownloader];
  }
+ 
+ Moreover, update your AppDelegate as follow:
+ 
+ - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    // Override point for customization after application launch.
+    // ...
+    [FLDownloader sharedDownloader];
+    //...
+    return YES;
+}
+ 
+TODO:
+- support for iOS 6.0 and previous
+ 

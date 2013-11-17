@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "FLDownload.h"
-#import <LombaXFramework/LombaXFramework.h>
+#import "FLDownloader.h"
+
 
 @implementation AppDelegate
 
@@ -20,7 +20,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [FLFileDebugger writeDebugLine:@"Test"];
+    // ...
+    [FLDownloader sharedDownloader];
+    //...
     return YES;
 }
 							
@@ -53,15 +55,7 @@
 
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
 {
-
-    
-    NSURL *url = [NSURL URLWithString:identifier];
-    
-    
-    [FLDownload resumeDownloadForSession:url];
-    
-    completionHandler();
-
+    [FLDownloader sharedDownloader];
 }
 
 
