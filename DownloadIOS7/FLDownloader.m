@@ -126,7 +126,7 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
     
     // get a list of the downloadTasks associated to this session
     [self.backgroundSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
-       
+        
         if ([downloadTasks count] > 0)
         {
             
@@ -145,18 +145,27 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
             }
             
             [self saveDownloads];
-        } else if ([_tasks count] > 0){
-            // if there are outstanding tasks not associated with a session, start them
-            
-            for (FLDownloadTask *task in [_tasks allValues]) {
+        } else {
+            // restart outstanding tasks. Use a delay to permit the delivery of delegate messages if the app has been awaken by the system
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                if ([_tasks count] > 0){
+                    // if there are outstanding tasks not associated with a session, start them
+                    // note: when the system wake up the app because a download has been finished
+                    
+                    for (FLDownloadTask *task in [_tasks allValues]) {
+                        
+                        NSURLRequest *request = [NSURLRequest requestWithURL:task.url];
+                        
+                        NSURLSessionDownloadTask *downloadTask = [self.backgroundSession downloadTaskWithRequest:request];
+                        
+                        task.downloadTask = downloadTask;
+                        [task start];
+                    }
+                }
                 
-                NSURLRequest *request = [NSURLRequest requestWithURL:task.url];
-                
-                NSURLSessionDownloadTask *downloadTask = [self.backgroundSession downloadTaskWithRequest:request];
-                
-                task.downloadTask = downloadTask;
-                [task start];
-            }
+            });
         }
     }];
 }
@@ -272,6 +281,8 @@ didFinishDownloadingToURL:(NSURL *)location
     
     NSString *finalLocation = [task.destinationDirectory stringByAppendingPathComponent:task.fileName];
     NSString *locationString = [location path];
+    
+    NSLog(@"Moving: %@ to: %@", locationString, finalLocation);
     
     // move the file
     BOOL success = [[NSFileManager defaultManager] moveItemAtPath:locationString toPath:finalLocation error:&error];
