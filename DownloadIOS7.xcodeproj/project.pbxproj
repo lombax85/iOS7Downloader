@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E803DBEF1830F0D8008681E9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E803DBEE1830F0D8008681E9 /* README.md */; };
+		E8497449183A8546007F86A3 /* FLDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E8497446183A8546007F86A3 /* FLDownloadTask.m */; };
+		E849744A183A8546007F86A3 /* FLDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E8497448183A8546007F86A3 /* FLDownloader.m */; };
 		E8907C6D1830236A009B4A8F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C6C1830236A009B4A8F /* Foundation.framework */; };
 		E8907C6F1830236A009B4A8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C6E1830236A009B4A8F /* CoreGraphics.framework */; };
 		E8907C711830236A009B4A8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C701830236A009B4A8F /* UIKit.framework */; };
@@ -22,8 +24,6 @@
 		E8907C8E1830236A009B4A8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C701830236A009B4A8F /* UIKit.framework */; };
 		E8907C961830236A009B4A8F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E8907C941830236A009B4A8F /* InfoPlist.strings */; };
 		E8907C981830236A009B4A8F /* DownloadIOS7Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E8907C971830236A009B4A8F /* DownloadIOS7Tests.m */; };
-		E89EAA1418391BDA0083F0A0 /* FLDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E89EAA1118391BDA0083F0A0 /* FLDownloadTask.m */; };
-		E89EAA1518391BDA0083F0A0 /* FLDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E89EAA1318391BDA0083F0A0 /* FLDownloader.m */; };
 		E89EAA1818391C8F0083F0A0 /* DownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E89EAA1718391C8F0083F0A0 /* DownloadViewController.m */; };
 		E89EAA1B18391CCF0083F0A0 /* DownloadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E89EAA1A18391CCF0083F0A0 /* DownloadCell.m */; };
 /* End PBXBuildFile section */
@@ -40,6 +40,10 @@
 
 /* Begin PBXFileReference section */
 		E803DBEE1830F0D8008681E9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
+		E8497445183A8546007F86A3 /* FLDownloadTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownloadTask.h; sourceTree = "<group>"; };
+		E8497446183A8546007F86A3 /* FLDownloadTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownloadTask.m; sourceTree = "<group>"; };
+		E8497447183A8546007F86A3 /* FLDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownloader.h; sourceTree = "<group>"; };
+		E8497448183A8546007F86A3 /* FLDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownloader.m; sourceTree = "<group>"; };
 		E8907C691830236A009B4A8F /* DownloadIOS7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DownloadIOS7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8907C6C1830236A009B4A8F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E8907C6E1830236A009B4A8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -59,10 +63,6 @@
 		E8907C931830236A009B4A8F /* DownloadIOS7Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DownloadIOS7Tests-Info.plist"; sourceTree = "<group>"; };
 		E8907C951830236A009B4A8F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E8907C971830236A009B4A8F /* DownloadIOS7Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownloadIOS7Tests.m; sourceTree = "<group>"; };
-		E89EAA1018391BDA0083F0A0 /* FLDownloadTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownloadTask.h; sourceTree = "<group>"; };
-		E89EAA1118391BDA0083F0A0 /* FLDownloadTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownloadTask.m; sourceTree = "<group>"; };
-		E89EAA1218391BDA0083F0A0 /* FLDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownloader.h; sourceTree = "<group>"; };
-		E89EAA1318391BDA0083F0A0 /* FLDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownloader.m; sourceTree = "<group>"; };
 		E89EAA1618391C8F0083F0A0 /* DownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadViewController.h; sourceTree = "<group>"; };
 		E89EAA1718391C8F0083F0A0 /* DownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadViewController.m; sourceTree = "<group>"; };
 		E89EAA1918391CCF0083F0A0 /* DownloadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadCell.h; sourceTree = "<group>"; };
@@ -132,10 +132,10 @@
 				E8907C7E1830236A009B4A8F /* Main.storyboard */,
 				E8907C811830236A009B4A8F /* ViewController.h */,
 				E8907C821830236A009B4A8F /* ViewController.m */,
-				E89EAA1018391BDA0083F0A0 /* FLDownloadTask.h */,
-				E89EAA1118391BDA0083F0A0 /* FLDownloadTask.m */,
-				E89EAA1218391BDA0083F0A0 /* FLDownloader.h */,
-				E89EAA1318391BDA0083F0A0 /* FLDownloader.m */,
+				E8497445183A8546007F86A3 /* FLDownloadTask.h */,
+				E8497446183A8546007F86A3 /* FLDownloadTask.m */,
+				E8497447183A8546007F86A3 /* FLDownloader.h */,
+				E8497448183A8546007F86A3 /* FLDownloader.m */,
 				E89EAA1C18391CD40083F0A0 /* Download View Controller */,
 				E8907C841830236A009B4A8F /* Images.xcassets */,
 				E8907C731830236A009B4A8F /* Supporting Files */,
@@ -281,12 +281,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E89EAA1418391BDA0083F0A0 /* FLDownloadTask.m in Sources */,
 				E89EAA1B18391CCF0083F0A0 /* DownloadCell.m in Sources */,
 				E8907C831830236A009B4A8F /* ViewController.m in Sources */,
 				E89EAA1818391C8F0083F0A0 /* DownloadViewController.m in Sources */,
+				E849744A183A8546007F86A3 /* FLDownloader.m in Sources */,
 				E8907C7D1830236A009B4A8F /* AppDelegate.m in Sources */,
-				E89EAA1518391BDA0083F0A0 /* FLDownloader.m in Sources */,
+				E8497449183A8546007F86A3 /* FLDownloadTask.m in Sources */,
 				E8907C791830236A009B4A8F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

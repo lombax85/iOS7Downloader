@@ -153,8 +153,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "269"
             endingLineNumber = "269"
-            landmarkName = "-URLSession:downloadTask:didFinishDownloadingToURL:"
-            landmarkType = "5">
+            landmarkName = "@implementation FLDownloader"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -37,6 +37,11 @@
  */
 -(BOOL)cancelDownloadTaskForURL:(NSURL *)url;
 
+/**
+ A default location for all downloads
+ */
+@property (copy, nonatomic) NSString *defaultFilePath;
+
 
 
 @end

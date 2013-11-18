@@ -59,6 +59,7 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
     if (self = [super init]) {
         _backgroundSession = nil;
         _tasks = nil;
+        _defaultFilePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES) lastObject];
         
         // load the tasks from preferences. Don't use to initialize _tasks since the returned object is immutable
         [self tasks];
@@ -285,7 +286,21 @@ didFinishDownloadingToURL:(NSURL *)location
     NSLog(@"Moving: %@ to: %@", locationString, finalLocation);
     
     // move the file
-    BOOL success = [[NSFileManager defaultManager] moveItemAtPath:locationString toPath:finalLocation error:&error];
+    BOOL success = NO;
+    
+    if (locationString && finalLocation)
+    {
+        success = [[NSFileManager defaultManager] moveItemAtPath:locationString toPath:finalLocation error:&error];
+    } else {
+        @try {
+            // if the finalLocation is nil, maybe the default filename is not ok. Use a default one
+            finalLocation = [task.destinationDirectory stringByAppendingPathComponent:@"file"];
+            success = [[NSFileManager defaultManager] moveItemAtPath:locationString toPath:finalLocation error:&error];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Error moving file after task finished: source or destination is nil");
+        }
+    }
     
     // remove the task
     [_tasks removeObjectForKey:task.url];

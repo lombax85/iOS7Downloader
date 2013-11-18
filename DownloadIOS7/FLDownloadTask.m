@@ -70,6 +70,14 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
     return [NSString stringWithString:[self.url.absoluteString lastPathComponent]];
 }
 
+- (NSString *)destinationDirectory
+{
+    if (!_destinationDirectory)
+        return [[FLDownloader sharedDownloader] defaultFilePath];
+    else
+        return _destinationDirectory;
+}
+
 #pragma mark - public methods
 
 /**
