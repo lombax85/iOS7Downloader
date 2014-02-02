@@ -31,7 +31,7 @@ Note for background download support
 - to support background download (as described above) you must add in your AppDelegate this method:
 
 
-
+    // add [FLDownloader sharedDownloader]; in AppDelegate
      - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
      {
         [FLDownloader sharedDownloader];
