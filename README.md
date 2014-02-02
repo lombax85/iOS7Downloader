@@ -25,7 +25,7 @@ When the download is finished, in this example, it will be copied inside the Doc
 
 Note for background download support
 
-- if the app is killed by the user, the download activity is killed by the system. It will resume from the beginning once the app is opened again. TODO: save resume data to avoid resuming from the beginning.
+- if the app is killed by the user, the download activity is killed by the system. At the subsequent startup, the system will pass the resume data and the download will continue from the last saved point.
 - if the app is killed by the system (example: to free memory), the download continues in background.
 - completion block and progress block are not executed if a download progress/finishes in background
 - to support background download (as described above) you must add in your AppDelegate this method:

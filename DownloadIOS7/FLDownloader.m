@@ -123,7 +123,7 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:sessionIdentifier];
     configuration.HTTPMaximumConnectionsPerHost = 10;
     
-    self.backgroundSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+    self.backgroundSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
     // get a list of the downloadTasks associated to this session
     [self.backgroundSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
@@ -148,12 +148,12 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
             [self saveDownloads];
         } else {
             // restart outstanding tasks. Use a delay to permit the delivery of delegate messages if the app has been awaken by the system
-            double delayInSeconds = 2.0;
+            double delayInSeconds = 5.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 if ([_tasks count] > 0){
                     // if there are outstanding tasks not associated with a session, start them
-                    // note: when the system wake up the app because a download has been finished
+                    // note: when the system wake up the app because a download have been finished
                     
                     for (FLDownloadTask *task in [_tasks allValues]) {
                         
@@ -162,7 +162,6 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
                         NSURLSessionDownloadTask *downloadTask = [self.backgroundSession downloadTaskWithRequest:request];
                         
                         task.downloadTask = downloadTask;
-                        [task start];
                     }
                 }
                 
@@ -206,6 +205,11 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
  */
 -(FLDownloadTask *)downloadTaskForURL:(NSURL *)url
 {
+    return [self downloadTaskForURL:url withResumeData:nil];
+}
+
+-(FLDownloadTask *)downloadTaskForURL:(NSURL *)url withResumeData:(NSData *)data
+{
     if ([self.tasks objectForKey:url])
         return [self.tasks objectForKey:url];
     
@@ -214,8 +218,17 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
     
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
-    NSURLSessionDownloadTask *downloadTask = [self.backgroundSession downloadTaskWithRequest:request];
+    NSURLSessionDownloadTask *downloadTask = nil;
     
+    if (data)
+    {
+         downloadTask = [self.backgroundSession downloadTaskWithResumeData:data];
+    }
+    else
+    {
+         downloadTask = [self.backgroundSession downloadTaskWithRequest:request];
+    }
+
     task.downloadTask = downloadTask;
     
     // add the task to the dictionary
@@ -353,6 +366,25 @@ expectedTotalBytes:(int64_t)expectedTotalBytes
 didCompleteWithError:(NSError *)error
 {
     NSLog(@"Session %@ with task %@ finished with error %@", session, task, error);
+    
+    if (error)
+    {
+        // check if resume data are available
+        if ([error.userInfo objectForKey:NSURLSessionDownloadTaskResumeData])
+        {
+            NSData *resumeData = [error.userInfo objectForKey:NSURLSessionDownloadTaskResumeData];
+            NSString *urlString = [error.userInfo objectForKey:NSURLErrorFailingURLStringErrorKey];
+            
+            if ([self.tasks objectForKey:[NSURL URLWithString:urlString]])
+            {
+                FLDownloadTask *task = [self.tasks objectForKey:[NSURL URLWithString:urlString]];
+                task.downloadTask = [self.backgroundSession downloadTaskWithResumeData:resumeData];
+                [task start];
+            }
+            
+        }
+            
+    }
 }
 
 

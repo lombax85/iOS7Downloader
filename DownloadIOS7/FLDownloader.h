@@ -31,9 +31,10 @@
  Once returned, the FLDownloadTask object must be started with 'start'. If you want, you can add a completion block, a progress block, and set other properties
 */
 -(FLDownloadTask *)downloadTaskForURL:(NSURL *)url;
+-(FLDownloadTask *)downloadTaskForURL:(NSURL *)url withResumeData:(NSData *)data;
 
 /**
- Remove the download task (stopping and cancelling it
+ Remove the download task (stopping and cancelling it)
  */
 -(BOOL)cancelDownloadTaskForURL:(NSURL *)url;
 
