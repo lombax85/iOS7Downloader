@@ -30,15 +30,16 @@ Note for background download support
 - completion block and progress block are not executed if a download progress/finishes in background
 - to support background download (as described above) you must add in your AppDelegate this method:
 
-
+```
     // add [FLDownloader sharedDownloader]; in AppDelegate
      - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
      {
         [FLDownloader sharedDownloader];
      }
- 
+ ```
+
  Moreover, update your AppDelegate as follow:
- 
+ ```
      - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     {
         // Override point for customization after application launch.
@@ -47,7 +48,7 @@ Note for background download support
         //...
         return YES;
     }
- 
+ ```
 TODO:
 - support for iOS 6.0 and previous
  
