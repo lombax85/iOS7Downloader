@@ -55,9 +55,9 @@
 @property (copy, nonatomic) NSString *destinationDirectory;
 
 /**
- The name of the file that it's being downloaded
+ The name of the file that it's being downloaded. You can change it
  */
-@property (copy, nonatomic, readonly) NSString *fileName;
+@property (copy, nonatomic) NSString *fileName;
 
 /**
  This is the underlying download task associated with the object

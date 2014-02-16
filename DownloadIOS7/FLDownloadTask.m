@@ -67,7 +67,14 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
 
 - (NSString *)fileName
 {
-    return [NSString stringWithString:[self.url.absoluteString lastPathComponent]];
+    if (!_fileName)
+    {
+        // remove the querystring after ? if exists
+        NSString *filename = [NSString stringWithString:[self.url.absoluteString lastPathComponent]];
+        return [[filename componentsSeparatedByString:@"?"] firstObject];
+    }
+    else
+        return _fileName;
 }
 
 - (NSString *)destinationDirectory

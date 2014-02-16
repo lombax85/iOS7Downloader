@@ -198,6 +198,31 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
     return task.originalRequest.URL;
 }
 
+-(NSString *)changeNameIfFileAtPathExists:(NSString *)filePathComplete
+{
+    // ------------------------------ FILENAME CHECK ------------------------------ //
+    // First: check the filename. If exists, adds (01) ... (99) to the filename
+    NSString *finalFilePath = filePathComplete;
+    NSString *fileName = [finalFilePath lastPathComponent];
+    NSString *fileNameWithoutExtension = [fileName stringByDeletingPathExtension];
+    NSString *fileExtension = [fileName pathExtension];
+    NSString *fileDirectory = [finalFilePath stringByDeletingLastPathComponent];
+    NSString *thePoint = @".";
+    
+    // the main counter
+    int counter = 0;
+    
+    // loop to increase the counter everytime an existent file is found
+    while ([[NSFileManager defaultManager] fileExistsAtPath:finalFilePath]) {
+        counter++;
+        fileName = [NSString stringWithFormat:@"%@(%i)%@%@", fileNameWithoutExtension, counter, thePoint, fileExtension];
+        finalFilePath = [fileDirectory stringByAppendingPathComponent:fileName];
+    }
+    
+    return finalFilePath;
+    // ---------------------------- FILENAME CHECK END ---------------------------- //
+}
+
 #pragma mark - Public methods
 
 /**
@@ -294,6 +319,9 @@ didFinishDownloadingToURL:(NSURL *)location
     NSError *error = nil;
     
     NSString *finalLocation = [task.destinationDirectory stringByAppendingPathComponent:task.fileName];
+    
+    finalLocation = [self changeNameIfFileAtPathExists:finalLocation];
+    
     NSString *locationString = [location path];
     
     NSLog(@"Moving: %@ to: %@", locationString, finalLocation);
