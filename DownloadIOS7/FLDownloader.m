@@ -358,7 +358,10 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
     if (task)
     {
         [task cancelPrivate];
-        [_tasks removeObjectForKey:url];
+        if (url)
+        {
+            [_tasks removeObjectForKey:url];
+        }
         [self saveDownloads];
         return YES;
     }
@@ -445,7 +448,10 @@ didFinishDownloadingToURL:(NSURL *)location
     }
     
     // remove the task
-    [_tasks removeObjectForKey:task.url];
+    if (task.url) {
+        [_tasks removeObjectForKey:task.url];
+    }
+
     [self saveDownloads];
     
     if (!success)
@@ -511,7 +517,10 @@ didCompleteWithError:(NSError *)error
         }
         
         // remove the task
-        [_tasks removeObjectForKey:task.originalRequest.URL];
+        if (task.originalRequest.URL) {
+            [_tasks removeObjectForKey:task.originalRequest.URL];
+        }
+
         [self saveDownloads];
     }
     
