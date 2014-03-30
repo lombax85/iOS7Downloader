@@ -19,6 +19,7 @@
  */
 static NSString *kFLDownloadEncodedURL = @"kFLDownloadEncodedURL";
 static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDestinationDirectory";
+static NSString *kFLDownloadEncodedType = @"kFLDownloadEncodedType";
 
 
 @interface FLDownloadTask ()
@@ -145,6 +146,7 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
 {
     [aCoder encodeObject:self.url forKey:kFLDownloadEncodedURL];
     [aCoder encodeObject:self.destinationDirectory forKey:kFLDownloadEncodedDestinationDirectory];
+    [aCoder encodeInt:self.type forKey:kFLDownloadEncodedType];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -153,7 +155,7 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
     if (self) {
         _url = [aDecoder decodeObjectForKey:kFLDownloadEncodedURL];
         _destinationDirectory = [aDecoder decodeObjectForKey:kFLDownloadEncodedDestinationDirectory];
-        
+        _type = [aDecoder decodeIntForKey:kFLDownloadEncodedType];
         // start
         
     }
