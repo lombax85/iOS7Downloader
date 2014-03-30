@@ -13,4 +13,8 @@
 - (IBAction)start:(id)sender;
 - (IBAction)startAlternative:(id)sender;
 
+// upload
+@property (strong, nonatomic) IBOutlet UITextField *uploadText;
+- (IBAction)startUpload:(id)sender;
+
 @end

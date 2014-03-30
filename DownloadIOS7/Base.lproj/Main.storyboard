@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -43,15 +43,33 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mEv-qs-VtJ">
-                                <rect key="frame" x="122" y="191" width="77" height="30"/>
+                                <rect key="frame" x="95" y="191" width="130" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Downloads">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Show Progress">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <segue destination="7c9-Lk-U7k" kind="modal" id="naj-xB-Y9K"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S5h-Sx-Ups">
+                                <rect key="frame" x="135" y="229" width="50" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Upload">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="startUpload:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="HXI-0B-xhJ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="292" translatesAutoresizingMaskIntoConstraints="NO" id="Dhr-4z-H10">
+                                <rect key="frame" x="15" y="260" width="292" height="129"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Upload button uploads a file (5MB.zip, look in supporting files) on a test server. You can see the upload progress. The file is not a real zip but random data. </string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -79,7 +97,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <progressView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9C6-wR-mTK">
-                                            <rect key="frame" x="20" y="40" width="280" height="2"/>
+                                            <rect key="frame" x="20" y="40" width="220" height="2"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </progressView>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSB-98-h2E">
@@ -101,7 +119,7 @@
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="10000000 KB" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fb1-td-vS8">
-                                            <rect key="frame" x="239.00000008514951" y="6" width="61" height="20"/>
+                                            <rect key="frame" x="239.00000043348837" y="6" width="61" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="61" id="Nrv-NC-EEd"/>
@@ -110,6 +128,12 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pV1-uP-EaJ">
+                                            <rect key="frame" x="265" y="30" width="42" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
@@ -121,7 +145,7 @@
                                         <constraint firstItem="fb1-td-vS8" firstAttribute="top" secondItem="tdD-ng-Zgk" secondAttribute="top" constant="6" id="bMb-Vg-bpI"/>
                                         <constraint firstItem="QSB-98-h2E" firstAttribute="top" secondItem="tdD-ng-Zgk" secondAttribute="top" constant="6" id="bkr-02-5nC"/>
                                         <constraint firstItem="6oh-7L-dzE" firstAttribute="top" secondItem="tdD-ng-Zgk" secondAttribute="top" constant="6" id="chV-qq-P6F"/>
-                                        <constraint firstAttribute="trailing" secondItem="9C6-wR-mTK" secondAttribute="trailing" constant="20" id="efa-rf-K3v"/>
+                                        <constraint firstAttribute="trailing" secondItem="9C6-wR-mTK" secondAttribute="trailing" constant="80" id="efa-rf-K3v"/>
                                         <constraint firstItem="fb1-td-vS8" firstAttribute="leading" secondItem="6oh-7L-dzE" secondAttribute="trailing" constant="3" id="nCa-Yq-ozq"/>
                                         <constraint firstItem="9C6-wR-mTK" firstAttribute="leading" secondItem="tdD-ng-Zgk" secondAttribute="leading" constant="20" id="qf6-Q6-FJr"/>
                                         <constraint firstItem="9C6-wR-mTK" firstAttribute="top" secondItem="fb1-td-vS8" secondAttribute="bottom" constant="14" id="teO-9R-H80"/>
@@ -134,6 +158,7 @@
                                     <outlet property="fileName" destination="QSB-98-h2E" id="Ref-fP-53Q"/>
                                     <outlet property="fileProgress" destination="9C6-wR-mTK" id="AE0-qg-5Bz"/>
                                     <outlet property="totalBytes" destination="6oh-7L-dzE" id="gb1-we-I5A"/>
+                                    <outlet property="type" destination="pV1-uP-EaJ" id="uDL-gk-yTJ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

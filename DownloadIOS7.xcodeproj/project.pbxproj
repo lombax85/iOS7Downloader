@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		E803DBEF1830F0D8008681E9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E803DBEE1830F0D8008681E9 /* README.md */; };
-		E8497449183A8546007F86A3 /* FLDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E8497446183A8546007F86A3 /* FLDownloadTask.m */; };
-		E849744A183A8546007F86A3 /* FLDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E8497448183A8546007F86A3 /* FLDownloader.m */; };
 		E8907C6D1830236A009B4A8F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C6C1830236A009B4A8F /* Foundation.framework */; };
 		E8907C6F1830236A009B4A8F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C6E1830236A009B4A8F /* CoreGraphics.framework */; };
 		E8907C711830236A009B4A8F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8907C701830236A009B4A8F /* UIKit.framework */; };
@@ -26,6 +24,9 @@
 		E8907C981830236A009B4A8F /* DownloadIOS7Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E8907C971830236A009B4A8F /* DownloadIOS7Tests.m */; };
 		E89EAA1818391C8F0083F0A0 /* DownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E89EAA1718391C8F0083F0A0 /* DownloadViewController.m */; };
 		E89EAA1B18391CCF0083F0A0 /* DownloadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E89EAA1A18391CCF0083F0A0 /* DownloadCell.m */; };
+		E8C0AC6F18E8188F00833718 /* FLDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E8C0AC6C18E8188F00833718 /* FLDownloader.m */; };
+		E8C0AC7018E8188F00833718 /* FLDownloadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E8C0AC6E18E8188F00833718 /* FLDownloadTask.m */; };
+		E8C0AC7218E81CAD00833718 /* 5MB.zip in Resources */ = {isa = PBXBuildFile; fileRef = E8C0AC7118E81CAD00833718 /* 5MB.zip */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,10 +41,6 @@
 
 /* Begin PBXFileReference section */
 		E803DBEE1830F0D8008681E9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
-		E8497445183A8546007F86A3 /* FLDownloadTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownloadTask.h; sourceTree = "<group>"; };
-		E8497446183A8546007F86A3 /* FLDownloadTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownloadTask.m; sourceTree = "<group>"; };
-		E8497447183A8546007F86A3 /* FLDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownloader.h; sourceTree = "<group>"; };
-		E8497448183A8546007F86A3 /* FLDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownloader.m; sourceTree = "<group>"; };
 		E8907C691830236A009B4A8F /* DownloadIOS7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DownloadIOS7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8907C6C1830236A009B4A8F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E8907C6E1830236A009B4A8F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -67,6 +64,11 @@
 		E89EAA1718391C8F0083F0A0 /* DownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadViewController.m; sourceTree = "<group>"; };
 		E89EAA1918391CCF0083F0A0 /* DownloadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadCell.h; sourceTree = "<group>"; };
 		E89EAA1A18391CCF0083F0A0 /* DownloadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadCell.m; sourceTree = "<group>"; };
+		E8C0AC6B18E8188F00833718 /* FLDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownloader.h; sourceTree = "<group>"; };
+		E8C0AC6C18E8188F00833718 /* FLDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownloader.m; sourceTree = "<group>"; };
+		E8C0AC6D18E8188F00833718 /* FLDownloadTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLDownloadTask.h; sourceTree = "<group>"; };
+		E8C0AC6E18E8188F00833718 /* FLDownloadTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLDownloadTask.m; sourceTree = "<group>"; };
+		E8C0AC7118E81CAD00833718 /* 5MB.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = 5MB.zip; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,10 +134,10 @@
 				E8907C7E1830236A009B4A8F /* Main.storyboard */,
 				E8907C811830236A009B4A8F /* ViewController.h */,
 				E8907C821830236A009B4A8F /* ViewController.m */,
-				E8497445183A8546007F86A3 /* FLDownloadTask.h */,
-				E8497446183A8546007F86A3 /* FLDownloadTask.m */,
-				E8497447183A8546007F86A3 /* FLDownloader.h */,
-				E8497448183A8546007F86A3 /* FLDownloader.m */,
+				E8C0AC6B18E8188F00833718 /* FLDownloader.h */,
+				E8C0AC6C18E8188F00833718 /* FLDownloader.m */,
+				E8C0AC6D18E8188F00833718 /* FLDownloadTask.h */,
+				E8C0AC6E18E8188F00833718 /* FLDownloadTask.m */,
 				E89EAA1C18391CD40083F0A0 /* Download View Controller */,
 				E8907C841830236A009B4A8F /* Images.xcassets */,
 				E8907C731830236A009B4A8F /* Supporting Files */,
@@ -146,6 +148,7 @@
 		E8907C731830236A009B4A8F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E8C0AC7118E81CAD00833718 /* 5MB.zip */,
 				E8907C741830236A009B4A8F /* DownloadIOS7-Info.plist */,
 				E8907C751830236A009B4A8F /* InfoPlist.strings */,
 				E8907C781830236A009B4A8F /* main.m */,
@@ -259,6 +262,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8C0AC7218E81CAD00833718 /* 5MB.zip in Resources */,
 				E8907C851830236A009B4A8F /* Images.xcassets in Resources */,
 				E8907C771830236A009B4A8F /* InfoPlist.strings in Resources */,
 				E803DBEF1830F0D8008681E9 /* README.md in Resources */,
@@ -284,9 +288,9 @@
 				E89EAA1B18391CCF0083F0A0 /* DownloadCell.m in Sources */,
 				E8907C831830236A009B4A8F /* ViewController.m in Sources */,
 				E89EAA1818391C8F0083F0A0 /* DownloadViewController.m in Sources */,
-				E849744A183A8546007F86A3 /* FLDownloader.m in Sources */,
+				E8C0AC7018E8188F00833718 /* FLDownloadTask.m in Sources */,
 				E8907C7D1830236A009B4A8F /* AppDelegate.m in Sources */,
-				E8497449183A8546007F86A3 /* FLDownloadTask.m in Sources */,
+				E8C0AC6F18E8188F00833718 /* FLDownloader.m in Sources */,
 				E8907C791830236A009B4A8F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

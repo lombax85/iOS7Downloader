@@ -149,6 +149,7 @@
     cell.fileProgress.progress = 0.0f;
     cell.totalBytes.text = @"";
     cell.expectedBytes.text = @"";
+    cell.type.text = (download.type == FLDownloadTaskTypeDownload) ? @"Download" : @"Upload";
     
     [self.cells setObject:cell forKey:[download url]];
     

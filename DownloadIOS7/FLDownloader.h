@@ -32,6 +32,19 @@
 */
 -(FLDownloadTask *)downloadTaskForURL:(NSURL *)url;
 -(FLDownloadTask *)downloadTaskForURL:(NSURL *)url withResumeData:(NSData *)data;
+-(FLDownloadTask *)downloadTaskForURLRequest:(NSURLRequest *)request;
+
+/**
+ Create and return an upload task for a given URL. If the upload already task exists, simply returns it. The upload is managed through http PUT method.
+ Once returned, the FLDownloadTask object must be started with 'start'. If you want, you can add a completion block, a progress block, and set other properties
+ */
+-(FLDownloadTask *)uploadTaskForURL:(NSURL *)url fromFile:(NSURL *)filePath;
+
+/**
+ Create and return an upload task for a given URL. If the upload already task exists, simply returns it.
+ With this method you can customize the underlying NSURLRequest
+ */
+-(FLDownloadTask *)uploadTaskForURLRequest:(NSURLRequest *)urlRequest fromFile:(NSURL *)filePath;
 
 /**
  Remove the download task (stopping and cancelling it)

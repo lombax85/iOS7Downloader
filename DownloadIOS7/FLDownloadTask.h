@@ -9,12 +9,27 @@
 #import <Foundation/Foundation.h>
 #import "FLDownloader.h"
 
+typedef enum {
+    FLDownloadTaskTypeDownload,
+    FLDownloadTaskTypeUpload
+} FLDownloadTaskType;
+
 @interface FLDownloadTask : NSObject <NSCoding>
 
 /**
  Initialize and return a new download task for a given url
  */
 +(FLDownloadTask *)downloadTaskForURL:(NSURL *)url NS_AVAILABLE_IOS(7_0);
+
+/**
+ Initialize and return a new upload task for a given url
+ */
++(FLDownloadTask *)uploadTaskForURL:(NSURL *)url fromFile:(NSURL *)filePath NS_AVAILABLE_IOS(7_0);
+
+/**
+ The type of the task: download or upload
+ */
+@property (nonatomic) FLDownloadTaskType type;
 
 /**
  Set the progress update block - optional
@@ -62,7 +77,12 @@
 /**
  This is the underlying download task associated with the object
  */
-@property (weak, nonatomic, readonly) NSURLSessionDownloadTask *downloadTask;
+@property (weak, nonatomic, readonly) id downloadTask;
+
+/**
+ This is the underlying upload task associated with the object
+ */
+@property (weak, nonatomic, readonly) NSURLSessionUploadTask *uploadTask;
 
 
 

@@ -26,7 +26,7 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
 /**
  This is the underlying download task associated with the object
  */
-@property (weak, nonatomic, readwrite) NSURLSessionDownloadTask *downloadTask;
+@property (weak, nonatomic, readwrite) id downloadTask;
 
 /**
  The download url
@@ -47,6 +47,7 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
         _downloadTask = nil;
         _url = nil;
         _destinationDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES) lastObject];
+        _type = FLDownloadTaskTypeDownload;
     }
     return self;
 }
@@ -60,7 +61,14 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
 
 +(FLDownloadTask *)downloadTaskForURL:(NSURL *)url
 {
-    return [[FLDownloader sharedDownloader] downloadTaskForURL:url];
+    FLDownloadTask *task = [[FLDownloader sharedDownloader] downloadTaskForURL:url];
+    return task;
+}
+
++(FLDownloadTask *)uploadTaskForURL:(NSURL *)url fromFile:(NSURL *)filePath
+{
+    FLDownloadTask *task = [[FLDownloader sharedDownloader] uploadTaskForURL:url fromFile:filePath];
+    return task;
 }
 
 #pragma mark - Setters and getters
@@ -120,7 +128,7 @@ static NSString *kFLDownloadEncodedDestinationDirectory = @"kFLDownloadEncodedDe
  */
 -(void)resumeOrPause
 {
-    NSURLSessionDownloadTask *task = [self downloadTask];
+    NSURLSessionTask *task = [self downloadTask];
     
     if (task.state == NSURLSessionTaskStateRunning)
     {

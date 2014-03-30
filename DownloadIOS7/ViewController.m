@@ -44,4 +44,15 @@
     
     [download start];
 }
+
+- (IBAction)startUpload:(id)sender {
+    
+    NSURL *url = [NSURL URLWithString:@"http://162.252.243.43/testput.php"];
+    NSURL *fileLocalURL = [[NSBundle mainBundle] URLForResource:@"5MB" withExtension:@"zip"];
+    FLDownloadTask *upload = [[FLDownloader sharedDownloader] uploadTaskForURL:url fromFile:fileLocalURL];
+    
+    [upload start];
+     
+    
+}
 @end

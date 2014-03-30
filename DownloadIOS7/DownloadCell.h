@@ -15,5 +15,6 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *totalBytes;
 @property (nonatomic, strong) IBOutlet UILabel *expectedBytes;
+@property (strong, nonatomic) IBOutlet UILabel *type;
 
 @end

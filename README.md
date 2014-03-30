@@ -49,6 +49,38 @@ Note for background download support
         return YES;
     }
  ```
-TODO:
-- support for iOS 6.0 and previous
+
+For uploading files, the http method PUT is used
+
+
+ ```
+    NSURL *url = [NSURL URLWithString:@"http://162.252.243.43/testput.php"];
+    NSURL *fileLocalURL = [[NSBundle mainBundle] URLForResource:@"5MB" withExtension:@"zip"];
+    FLDownloadTask *upload = [[FLDownloader sharedDownloader] uploadTaskForURL:url fromFile:fileLocalURL];
+    
+    [upload start];
+
+ ```
  
+ a test file and a link to a test server is included in this project. Please don't abuse if. The files are not written on the server but the bandwidth costs :-)
+ If you want to test with your own server, here's a php script that you can use:
+ 
+  ```
+ <?php
+    /* read PUT data */
+    $putdata = fopen("php://input", "r");
+
+    /* Open file for writing, change "testput" to your filename */
+    $fp = fopen("testput", "w");
+
+    /* read data and write to file */
+    while ($data = fread($putdata, 1024))
+    {
+    fwrite($fp, $data);
+    }
+
+    /* close stream */
+    fclose($fp);
+    fclose($putdata);
+?>
+ ```

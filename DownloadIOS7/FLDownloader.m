@@ -16,7 +16,7 @@
 
 - (id)initPrivate;
 - (void)cancelPrivate;
-@property (weak, nonatomic, readwrite) NSURLSessionDownloadTask *downloadTask;
+@property (weak, nonatomic, readwrite) id downloadTask;
 @property (strong, nonatomic, readwrite) NSURL *url;
 
 @end
@@ -240,6 +240,7 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
     
     FLDownloadTask *task = [[FLDownloadTask alloc] initPrivate];
     task.url = url;
+    task.type = FLDownloadTaskTypeDownload;
     
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
@@ -263,6 +264,92 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
     
     return task;
 }
+
+-(FLDownloadTask *)downloadTaskForURLRequest:(NSURLRequest *)request
+{
+    if ([self.tasks objectForKey:request.URL])
+        return [self.tasks objectForKey:request.URL];
+    
+    FLDownloadTask *task = [[FLDownloadTask alloc] initPrivate];
+    task.url = request.URL;
+    task.type = FLDownloadTaskTypeDownload;
+    
+    NSURLSessionDownloadTask *downloadTask = nil;
+    downloadTask = [self.backgroundSession downloadTaskWithRequest:request];
+    
+    
+    task.downloadTask = downloadTask;
+    
+    // add the task to the dictionary
+    [_tasks setObject:task forKey:request.URL];
+    
+    [self saveDownloads];
+    
+    return task;
+}
+
+
+-(FLDownloadTask *)uploadTaskForURL:(NSURL *)url fromFile:(NSURL *)filePath
+{
+    if ([self.tasks objectForKey:url])
+        return [self.tasks objectForKey:url];
+    
+    FLDownloadTask *task = [[FLDownloadTask alloc] initPrivate];
+    task.url = url;
+    task.type = FLDownloadTaskTypeUpload;
+    
+    // set the filename
+    NSString *filename = [filePath lastPathComponent];
+    task.fileName = filename;
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    [request setHTTPMethod:@"PUT"];
+    
+    NSURLSessionUploadTask *uploadTask = nil;
+    
+
+    uploadTask = [self.backgroundSession uploadTaskWithRequest:request fromFile:filePath];
+    
+    task.downloadTask = uploadTask;
+    
+    // add the task to the dictionary
+    [_tasks setObject:task forKey:url];
+    
+    [self saveDownloads];
+    
+    return task;
+}
+
+-(FLDownloadTask *)uploadTaskForURLRequest:(NSURLRequest *)urlRequest fromFile:(NSURL *)filePath
+{
+    if ([self.tasks objectForKey:urlRequest.URL])
+        return [self.tasks objectForKey:urlRequest.URL];
+    
+    FLDownloadTask *task = [[FLDownloadTask alloc] initPrivate];
+    task.url = urlRequest.URL;
+    task.type = FLDownloadTaskTypeUpload;
+    
+    // set the filename
+    NSString *filename = [filePath lastPathComponent];
+    task.fileName = filename;
+    
+    NSURLSessionUploadTask *uploadTask = nil;
+    
+    
+    uploadTask = [self.backgroundSession uploadTaskWithRequest:urlRequest fromFile:filePath];
+    
+    task.downloadTask = uploadTask;
+    
+    // add the task to the dictionary
+    [_tasks setObject:task forKey:urlRequest.URL];
+    
+    [self saveDownloads];
+    
+    return task;
+}
+
+
 
 -(BOOL)cancelDownloadTaskForURL:(NSURL *)url
 {
@@ -302,6 +389,20 @@ static NSString *kFLDownloaderBackgroundSessionIdentifier = @"com.FLDownloader.b
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session
 {
     
+}
+
+/* Sent periodically to notify the delegate of upload progress.  This
+ * information is also available as properties of the task.
+ */
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
+   didSendBodyData:(int64_t)bytesSent
+    totalBytesSent:(int64_t)totalBytesSent
+totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend;
+{
+    FLDownloadTask *uploadTask = [self.tasks objectForKey:task.originalRequest.URL];
+    
+    if (uploadTask.progressBlock)
+        uploadTask.progressBlock(task.originalRequest.URL, bytesSent, totalBytesSent, totalBytesExpectedToSend);
 }
 
 #pragma mark - NSURLSessionDownloadDelegate
@@ -394,6 +495,26 @@ expectedTotalBytes:(int64_t)expectedTotalBytes
 didCompleteWithError:(NSError *)error
 {
     NSLog(@"Session %@ with task %@ finished with error %@", session, task, error);
+    
+    if ([task isKindOfClass:[NSURLSessionUploadTask class]])
+    {
+        FLDownloadTask *theTask = [_tasks objectForKey:task.originalRequest.URL];
+        
+        if (error)
+        {
+            NSLog(@"Error uploading file");
+            if (theTask.completionBlock)
+                theTask.completionBlock(NO, error);
+        } else {
+            if (theTask.completionBlock)
+                theTask.completionBlock(YES, nil);
+        }
+        
+        // remove the task
+        [_tasks removeObjectForKey:task.originalRequest.URL];
+        [self saveDownloads];
+    }
+    
     
     if (error)
     {
